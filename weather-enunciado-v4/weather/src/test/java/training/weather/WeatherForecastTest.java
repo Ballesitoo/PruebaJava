@@ -11,7 +11,7 @@ public class WeatherForecastTest {
 	@Test
 	public void unfinished_test() throws IOException {
 		WeatherForecast weatherForecast = new WeatherForecast();
-		String forecast = weatherForecast.getCityWeather("Madrid", new Date());
+		String forecast = weatherForecast.getCityWeather("Barcelona", LocalDate.parse("2022-09-14"));
 		System.out.println(forecast);
 	}
 }
