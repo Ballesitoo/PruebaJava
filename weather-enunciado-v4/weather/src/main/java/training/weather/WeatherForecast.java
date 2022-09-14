@@ -36,7 +36,7 @@ public class WeatherForecast {
                                 .format(datetime)
                                 .equals(dailyResults.get(i).toString())
                 ) {
-					return ForecastEnum.getEnumByCode((int) weatherCodeResults.get(i)).getDescription();
+					return ForecastEnum.getEnumByCode(weatherCodeResults.getInt(i)).getDescription();
 				}
 			}
 		}
