@@ -14,21 +14,25 @@ public class HttpForecast {
 
     public static JSONObject httpRequest(String city) {
         try {
+            final String URLGeocode = "https://geocode.xyz/" + city + "?json=1";
+
             //Primera request pasando en la URL la ciudad que se ha escrito.
             HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
-            HttpRequest request = requestFactory.buildGetRequest(new GenericUrl("https://geocode.xyz/" + city + "?json=1"));
+            HttpRequest request = requestFactory.buildGetRequest(new GenericUrl(URLGeocode));
             String requestResult = request.execute().parseAsString();
             //Se guarda en un objeto JSONObject toda la request.
             jsonObject = new JSONObject(requestResult);
 
             //Se guardan en dos strings tanto la longitud como la latitud del objecto guardado de la request.
-            String longt = jsonObject.get("longt").toString();
-            String latt = jsonObject.get("latt").toString();
+            final String longt = jsonObject.get("longt").toString();
+            final String latt = jsonObject.get("latt").toString();
+
+            final String URLMeteo = "https://api.open-meteo.com/v1/forecast?latitude=" +
+                    latt + "&longitude=" + longt + "&daily=weathercode&current_weather=true&timezone=Europe%2FBerlin";
 
             //Segunda request pasando la latitud y longitud guardadas de antes.
             requestFactory = new NetHttpTransport().createRequestFactory();
-            request = requestFactory.buildGetRequest(new GenericUrl("https://api.open-meteo.com/v1/forecast?latitude=" +
-                    latt + "&longitude=" + longt + "&daily=weathercode&current_weather=true&timezone=Europe%2FBerlin"));
+            request = requestFactory.buildGetRequest(new GenericUrl(URLMeteo));
             requestResult = request.execute().parseAsString();
 
             //Se sobreescribe el JSONObject con el nuevo resultado dónde ya están los días y los códigos del tiempo que queremos.

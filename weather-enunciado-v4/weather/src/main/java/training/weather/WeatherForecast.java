@@ -20,9 +20,6 @@ public class WeatherForecast {
 		//Si la fecha proporcionada esta dentro del rango de una semana desde hoy, entrara
 		if (datetime.isBefore(LocalDate.now().plusDays(7)) && datetime.isAfter(LocalDate.now().minusDays(1))) {
 
-			//Llamada al método que hace las requests.
-			//httpRequest(city);
-
 			//Llamada a HttpForecast dónde se hacen las requests y se guardan en un JSONObject.
 			JSONObject resultObject =  HttpForecast.httpRequest(city);
 
@@ -41,6 +38,7 @@ public class WeatherForecast {
 		}
 
 		//Si no entra manda un mensaje de que debe poner una fecha entre hoy y dentro de una semana.
-		return "Proporciona una fecha entre los días" + LocalDate.now() + " y " + LocalDate.now().plusDays(6);
+		return "Proporciona una fecha entre los días " + LocalDate.now() + " y " + LocalDate.now().plusDays(6);
 	}
+
 }
