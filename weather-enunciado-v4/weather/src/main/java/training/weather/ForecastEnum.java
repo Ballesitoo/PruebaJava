@@ -36,12 +36,12 @@ public enum ForecastEnum {
 
     private final String description;
 
-    private static final HashMap<Integer, ForecastEnum> lookup;
+    private static final HashMap<Integer, ForecastEnum> forecast;
 
     static {
-        lookup = new HashMap<>();
+        forecast = new HashMap<>();
         for (ForecastEnum e : ForecastEnum.values()) {
-            lookup.put(e.code, e);
+            forecast.put(e.code, e);
         }
     }
 
@@ -51,7 +51,7 @@ public enum ForecastEnum {
     }
 
     public static ForecastEnum getEnumByCode(int code) {
-        return lookup.get(code);
+        return forecast.get(code);
     }
 
     public String getDescription() {

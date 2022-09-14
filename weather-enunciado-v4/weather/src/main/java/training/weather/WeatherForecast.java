@@ -1,63 +1,46 @@
 package training.weather;
 
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestFactory;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class WeatherForecast {
 
-	private static JSONArray dailyResults, weatherCodeResults;
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public static String getCityWeather(String city, LocalDate datetime) throws IOException {
 
-		//Si la fecha proporcionada es null se pondra la fecha actual
+		//Si la fecha proporcionada es null se pondrá la fecha actual.
 		if (datetime == null) {
 			datetime = LocalDate.now();
 		}
 
 		//Si la fecha proporcionada esta dentro del rango de una semana desde hoy, entrara
-		if (datetime.isBefore(LocalDate.now().plusDays(7))
-				&& datetime.isAfter(LocalDate.now().minusDays(1))) {
+		if (datetime.isBefore(LocalDate.now().plusDays(7)) && datetime.isAfter(LocalDate.now().minusDays(1))) {
 
-			httpRequest(city);
+			//Llamada al método que hace las requests.
+			//httpRequest(city);
 
+			//Llamada a HttpForecast dónde se hacen las requests y se guardan en un JSONObject.
+			JSONObject resultObject =  HttpForecast.httpRequest(city);
+
+			//A partir de este JSONObject se guardan en dos JSONArrays tanto los días que tiene el tiempo como sus correspondientes códigos de que tiempo harán esos días.
+			JSONArray dailyResults = resultObject.getJSONObject("daily").getJSONArray("time");
+			JSONArray weatherCodeResults = resultObject.getJSONObject("daily").getJSONArray("weathercode");
+
+			//For para recorrer cualquier JSONArray creado con el método anterior.
 			for (int i = 0; i < dailyResults.length(); i++) {
+				//A la que llegue al día que se ha puesto para la ejecución del programa,
+				//pasará el código de ese día a ForecastEnum para que devuelva que tiempo hará el día pertinente.
 				if (datetime.format(dateTimeFormatter).equals(dailyResults.get(i).toString())) {
-					return ForecastEnum.getEnumByCode(weatherCodeResults.getInt(i)).getDescription();
+					return "The weather forecast in " + city + " the day " + datetime + " is " + ForecastEnum.getEnumByCode(weatherCodeResults.getInt(i)).getDescription();
 				}
 			}
 		}
 
 		//Si no entra manda un mensaje de que debe poner una fecha entre hoy y dentro de una semana.
-		return "Proporciona una fecha desde " + LocalDate.now() + " hasta " + LocalDate.now().plusDays(6);
-	}
-
-	private static void httpRequest(String city) {
-		try {
-			HttpRequestFactory rf = new NetHttpTransport().createRequestFactory();
-			HttpRequest req = rf.buildGetRequest(new GenericUrl("https://geocode.xyz/" + city + "?json=1"));
-			String r = req.execute().parseAsString();
-			JSONObject object = new JSONObject(r);
-			String longt = object.get("longt").toString();
-			String latt = object.get("latt").toString();
-			rf = new NetHttpTransport().createRequestFactory();
-			req = rf.buildGetRequest(new GenericUrl("https://api.open-meteo.com/v1/forecast?latitude=" +
-					latt + "&longitude=" + longt + "&daily=weathercode&current_weather=true&timezone=Europe%2FBerlin"));
-			r = req.execute().parseAsString();
-			dailyResults = new JSONObject(r).getJSONObject("daily").getJSONArray("time");
-			weatherCodeResults = new JSONObject(r).getJSONObject("daily").getJSONArray("weathercode");
-
-		} catch (IOException ioException) {
-			httpRequest(city);
-		}
+		return "Proporciona una fecha entre los días" + LocalDate.now() + " y " + LocalDate.now().plusDays(6);
 	}
 }
