@@ -21,6 +21,7 @@
 
 
 - ¿Qué componentes has creado y por qué?
+  
   He creado una clase llamada HttpForecast, en esa clase es llevado todo lo relacionado con las peticiones de internet para que así sea más legible y que quede ForecastEnum el que diga el pronóstico que es, HttpForecast el que hace las peticiones a internet y WeatherForecast el intermediario entre los dos y maneje los resultados como quiera.
 
 
@@ -29,10 +30,14 @@
   No he usado nada de eso. La verdad es que no sabía que era la programación funcional, he mirado un poco que es y no tiene para nada mala pinta, por lo que he visto usa mucho lambda que sirve para no usar métodos anónimos, también lo hace algo más legible haciendo que se vea más lo que hace que cómo lo hace. Por lo que he visto parece que tiene mucha "chicha" y se pueden hacen muchas virguerías con este tipo de programación.
 
 
-- ¿Qué piensas del rendimiento de la aplicación? 
+- ¿Qué piensas del rendimiento de la aplicación?
+  
+  En general diría que está bien, lo que algo malo que le veo es que como la api tiene un máximo de 2 peticiones por segundo y eso hace que por cómo lo he hecho si en el momento de ejecutarlo hay muchas peticiones, tardará más la ejecución.
 
 
 - ¿Qué harías para mejorar el rendimiento si esta aplicación fuera a recibir al menos 100 peticiones por segundo?
+  
+  Si ya fueran muchas peticiones quizás se podría mirar de hacer algo con hilos para que no fuera tan cargado el sistema, así el rendimiento sería mejor seguro.
 
 
 - ¿Cuánto tiempo has invertido para implementar la solución?
@@ -40,5 +45,6 @@
   En total diría que han sido unas 4-5 horas más o menos.
 
 
-- ¿Crees que en un escenario real valdría la pena dedicar tiempo a realizar esta refactorización?
-Yo diría que si es para un escenario real siempre va bien tener todo lo mejor refactorizado que puedas, más que nada por si en 4-5 meses debes de mirarlo de nuevo te sea mucho mejor el entender cómo habías hecho todo.
+- ¿Crees que en un escenario real valdría la pena dedicar tiempo a realizar esta refactorización? 
+  
+  Yo diría que si es para un escenario real siempre va bien tener todo lo mejor refactorizado que puedas, más que nada por si en 4-5 meses debes de mirarlo de nuevo te sea mucho mejor el entender cómo habías hecho todo.
